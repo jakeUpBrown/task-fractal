@@ -1,0 +1,37 @@
+[
+    {
+        "id": "1",
+        "type": "URL",
+        "content": "https://www.goldandblack.com"
+    },
+    {
+        "id": "2",
+        "type": "SHEETS",
+        "content": "https://docs.google.com/spreadsheets/d/1PZSSE1snreaQYE02cyZgkr4_JVg7gRB00loLkkK0Bd8/edit#gid=230139423"
+    },
+    {
+        "id": "3",
+        "type": "DOCS",
+        "content": ""
+    },
+    {
+        "id": "4",
+        "type": "DRIVE",
+        "content": ""
+    },
+    {
+        "id": "5",
+        "type": "CONCEPTS",
+        "content": ""
+    },
+    {
+        "id": "6",
+        "type": "SKETCHUP",
+        "content": ""
+    },
+    {
+        "id": "7",
+        "type": "GITHUB",
+        "content": ""
+    }
+]

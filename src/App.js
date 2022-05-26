@@ -6,10 +6,10 @@ import {
   Switch
 } from 'react-router-dom';
 
-import Calendar from './pages/Calendar/Calendar';
-import TaskList from './pages/TaskList/TaskList';
-import Home from './pages/Home/Home';
-import Task from './pages/Task/Task';
+import Calendar from './pages/calendar/Calendar';
+import TaskList from './pages/taskList/TaskList';
+import Home from './pages/home/Home';
+import Project from './pages/project/Project';
 import Navbar from './Components/Navbar/Navbar';
 
 const App = () => {
@@ -24,8 +24,8 @@ const App = () => {
         <Route path="/calendar" exact>
           <Calendar/>
         </Route>
-        <Route path="/task" exact>
-          <Task/>
+        <Route path="/project" exact>
+          <Project/>
         </Route>
         <Route path="/taskList" exact>
           <TaskList/>

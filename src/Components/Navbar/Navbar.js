@@ -93,10 +93,10 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/task" exact>
+              <NavLink className="nav-link" to="/project" exact>
                 <i 
                 className="far fa-chart-bar">
-                </i>Task
+                </i>Project
               </NavLink>
             </li>
         </ul>

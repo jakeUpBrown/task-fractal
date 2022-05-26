@@ -1,7 +1,7 @@
 import React from 'react'
 const Calendar = () => {
   return (
-    <div className="container">
+    <div>
     
       <h1 className="text-center" style={{paddingTop: "30%"}}>
         Calendar
