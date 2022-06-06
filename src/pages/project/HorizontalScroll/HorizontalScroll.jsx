@@ -7,16 +7,9 @@ import "./globalStyles.css";
 import usePreventBodyScroll from "./usePreventBodyScroll";
 
 // NOTE: embrace power of CSS flexbox!
-//import "./arrowsOnBottomOrTop.css";
 import "./hideScrollbar.css";
-
-const elemPrefix = "test";
-const getId = (index) => `${elemPrefix}${index}`;
-
-const getItems = () =>
-  Array(20)
-    .fill(0)
-    .map((_, ind) => ({ id: getId(ind) }));
+import Section from "../../../Components/Section/Section";
+import AddButton from "../../../Components/AddButton/AddButton";
 
 function onWheel(apiObj, ev) {
   const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
@@ -33,9 +26,44 @@ function onWheel(apiObj, ev) {
   }
 }
 
-function App() {
-  const [items] = React.useState(getItems);
+const App = ({
+    subTaskTree,
+    subTasks,
+    sectionNames,
+}) => {
   const { disableScroll, enableScroll } = usePreventBodyScroll();
+
+  if (!subTaskTree) {
+      return (<div>No Subtasks</div> )
+  }
+  const numSections = Math.max(...Object.values(subTaskTree).map(o => o.sectionIdx)) + 1
+  const sectionTasks = Array.from(Array(numSections), () => Array(0))
+  // for each section, create a Section Component and add to the page
+  Object.entries(subTaskTree).forEach(element => {
+    const taskId = element[0]
+    const obj = element[1]
+
+    const {
+      sectionIdx,
+    } = obj
+
+    sectionTasks[sectionIdx].push({
+      ...obj,
+      taskId,
+    });
+  });
+
+  const sections = sectionTasks.map((st, idx) => {
+    return (
+        <Section 
+        sectionName={sectionNames[idx]}
+        subTasks={subTasks} 
+        subTaskTree={st} 
+        itemId={`section-${idx}`} // NOTE: itemId is required for track items
+        key={`section-${idx}`}
+        />
+    )
+  })
 
   return (
     <>
@@ -46,17 +74,13 @@ function App() {
             RightArrow={RightArrow}
             onWheel={onWheel}
           >
-            {items.map(({ id }) => (
-              <Card
-                title={id}
-                itemId={id} // NOTE: itemId is required for track items
-                key={id}
-              />
-            ))}
+            {sections}
+            <AddButton />
           </ScrollMenu>
         </div>
       </div>
     </>
   );
 }
+
 export default App;

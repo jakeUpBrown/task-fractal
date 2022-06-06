@@ -1,0 +1,27 @@
+[
+    {
+        "projectId": "1",
+        "name": "Woodworking Task Example",
+        "type": "HOBBY",
+        "subType": "WOODWORKING",
+        "apprLength": {
+            "value": 1,
+            "unit": "DAY"
+        },
+        "isFinished": true,
+        "priority": "HIGH",
+        "dueDate": "2022-05-28"
+    },
+    {
+        "projectId": "2",
+        "name": "Work task example",
+        "type": "WORK",
+        "apprLength": {
+            "value": 1,
+            "unit": "DAY"
+        },
+        "isFinished": true,
+        "priority": "HIGH",
+        "dueDate": "2022-05-28"
+    }
+]

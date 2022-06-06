@@ -46,7 +46,7 @@ const Navbar = () => {
   return (
   <nav className="navbar navbar-expand-lg navbar-mainbg">
     
-      <NavLink className="navbar-brand navbar-logo" to="/" exact>
+      <NavLink className="navbar-brand navbar-logo" to="/">
         Task Fractal
       </NavLink>
     
@@ -70,7 +70,7 @@ const Navbar = () => {
             </div>
             
             <li className="nav-item active">
-              <NavLink className="nav-link" to="/" exact>
+              <NavLink className="nav-link" to="/">
                 <i 
                 className="fas fa-tachometer-alt">
                 </i>Home
@@ -78,7 +78,7 @@ const Navbar = () => {
             </li>
 
             <li className="nav-item">
-              <NavLink className="nav-link" to="/calendar" exact>
+              <NavLink className="nav-link" to="/calendar">
                 <i 
                 className="far fa-address-book">
                 </i>Calendar
@@ -86,14 +86,21 @@ const Navbar = () => {
             </li>
 
             <li className="nav-item">
-              <NavLink className="nav-link" to="/taskList" exact>
+              <NavLink className="nav-link" to="/taskList">
                 <i 
                 className="far fa-clone">
                 </i>Task List
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/project" exact>
+              <NavLink className="nav-link" to="/projectList">
+                <i 
+                className="far fa-clone">
+                </i>All Projects
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/project/1">
                 <i 
                 className="far fa-chart-bar">
                 </i>Project

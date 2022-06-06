@@ -1,0 +1,36 @@
+.task-path-link {
+    margin: 0 10px 0 10px;
+}
+
+.current-task-path {
+    font-weight: bold;
+}
+
+.task-path-link:not(.current-task-path)::after {
+    content:'';
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-45deg);
+    margin-left: 13px;
+}
+
+.project-header {
+    padding: 5px 0 5px 15px;
+    font-size: 20px;
+}
+
+.project-header > div {
+    display: flex;
+    width: 100%;
+}
+
+.project-header-settings {
+    justify-self: end;
+    width: fit-content;
+    flex-shrink: 0;
+    padding: 2px;
+    margin-left: auto;
+    margin-right: 10px;
+}

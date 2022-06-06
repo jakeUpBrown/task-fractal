@@ -1,51 +1,80 @@
 import React from 'react'
+import { useParams, useSearchParams } from 'react-router-dom';
 import './Project.css'
-import tasks from '../../resources/tasks.json'
+import subTasks from '../../resources/tasks.json'
 import project from '../../resources/project.json'
 import HorizontalScroll from './HorizontalScroll/HorizontalScroll'
+import ProjectTitle from './ProjectTitle/ProjectTitle';
+
+// Finds path of taskId to parentTaskId
+const findPath = (ob, key) => {
+  const path = [];
+  const keyExists = (obj) => {
+    if (!obj || (typeof obj !== "object" && !Array.isArray(obj))) {
+      return false;
+    }
+    if (obj.hasOwnProperty(key)) {
+      return true;
+    }
+    const subTaskTree = obj.subTaskTree;
+    if (!subTaskTree) {
+      return false;
+    }
+    if (subTaskTree && subTaskTree.hasOwnProperty(key)) {
+      return true;
+    }
+
+    // get subTaskTree and search all of the id's.
+    for (const k in subTaskTree) {
+      path.push(k);
+      const result = keyExists(subTaskTree[k], key);
+      if (result) {
+        return result;
+      }
+    }
+
+    return false;
+  };
+
+  keyExists(ob);
+  return path;
+}
 
 const Project = () => {
+
   // traverse the projects class and add a section for each sectionName value in array
   // have project header
+  let [searchParams] = useSearchParams();
+  const parentTaskId = searchParams.get('parentTaskId')
+  const {
+    projectId,
+  } = useParams();
 
-  const { 
-    name: projectName,
-    subTasks,
+  const taskPath = (parentTaskId && parentTaskId !== projectId) ? findPath(project, parentTaskId) : undefined;
+
+  const {
+    subTaskTree,
+    sectionNames,
   } = project
 
-  const numSections = Math.max(...Object.values(subTasks).map(o => o.sectionIdx)) + 1
+  let currentSectionNames = sectionNames;
+  let currentSubTaskTree = subTaskTree;
+  if (parentTaskId) {
+    taskPath.forEach((taskId) => {
+      currentSubTaskTree = currentSubTaskTree[taskId].subTaskTree
+    })
+    currentSectionNames = currentSubTaskTree[parentTaskId].sectionNames;
+    currentSubTaskTree = currentSubTaskTree[parentTaskId].subTaskTree
+    // traverse path using taskPath and replace
+  }
 
-  const sectionTasks = Array.from(Array(numSections), () => Array(0))
-  // for each section, create a Section Component and add to the page
-  Object.entries(subTasks).forEach(element => {
-    const taskId = element[0]
-    const obj = element[1]
-
-    const {
-      sectionIdx,
-    } = obj
-
-    sectionTasks[sectionIdx].push({
-      ...obj,
-      taskId,
-    });
-  });
-
-  console.log(sectionTasks);
-
-
-
+  // TODO: add structure to pull project.json and tasks.json info from path params project 
+  // TODO: change the context to be the parentTaskId param as the parent task
   return (
     <div className="container2">
-
-      <div className="projectHeader">
-        <div className="projectName">
-          {projectName}
-        </div>
-      </div>
-
+      <ProjectTitle taskPath={taskPath} project={project} parentTaskId={parentTaskId} subTasks={subTasks}/>
       <div className='subTaskContainer'>
-        <HorizontalScroll />
+        <HorizontalScroll subTaskTree={currentSubTaskTree} subTasks={subTasks} sectionNames={currentSectionNames} />
       </div>
     </div>
   )
