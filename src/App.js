@@ -5,7 +5,7 @@ import {
   Routes
 } from 'react-router-dom';
 
-import Calendar from './pages/calendar/Calendar';
+import Calendar from './pages/Calendars/Calendar';
 import TaskList from './pages/taskList/TaskList';
 import Home from './pages/home/Home';
 import Project from './pages/project/Project';

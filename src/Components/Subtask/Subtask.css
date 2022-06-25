@@ -51,3 +51,16 @@
     flex-shrink: 0;
     padding: 2px;
 }
+
+.task-check-circle {
+    height: 16px;
+    width: 16px;
+    border: 1px solid #dcdcdc;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+}
