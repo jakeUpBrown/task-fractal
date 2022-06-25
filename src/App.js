@@ -6,8 +6,8 @@ import {
 } from 'react-router-dom';
 
 import Calendar from './pages/calendar/Calendar';
-import TaskList from './pages/TaskLists/TaskList';
-import Home from './pages/Homes/Home';
+import TaskList from './pages/tasklist/TaskList';
+import Home from './pages/home/Home';
 import Project from './pages/project/Project';
 import Navbar from './Components/Navbar/Navbar';
 import ProjectList from './pages/projectList/ProjectList';
