@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom';
 import './Project.css'
-import subTasks from '../../resources/tasks.json'
-import project from '../../resources/project.json'
+import { taskArrayToMap } from '../../Utils/SubtaskHelper';
 import HorizontalScroll from './HorizontalScroll/HorizontalScroll'
 import ProjectTitle from './ProjectTitle/ProjectTitle';
+import axios from "axios";
 
+// https://p0ts58nd3h.execute-api.us-west-1.amazonaws.com/prod/readProject
 // Finds path of taskId to parentTaskId
 const findPath = (ob, key) => {
   const path = [];
@@ -49,6 +50,51 @@ const Project = () => {
   const {
     projectId,
   } = useParams();
+
+  const [project, setProject] = useState();
+  const [subTasks, setSubTasks] = useState();
+
+  useEffect(() => {
+    console.log('useEffect project', project);
+    if (!!project) {
+      console.log('already loaded project');
+      return;
+    }
+    async function readProject() {
+      axios.post(
+        'https://p0ts58nd3h.execute-api.us-west-1.amazonaws.com/prod/readproject',
+        { projectId: projectId }
+      ).then(result => {
+        console.log('got result: ', result);
+        setProject(result.data);
+      })
+    }
+    readProject();
+  }, [ projectId, project ]);
+
+  useEffect(() => {
+    console.log('useEffect subTasks', subTasks);
+    if (!!subTasks) {
+      console.log('already loaded subTasks');
+      return;
+    }
+    async function readTasksByProjectId() {
+      axios.post(
+        'https://p0ts58nd3h.execute-api.us-west-1.amazonaws.com/prod/readtasksbyprojectid',
+        { projectId: projectId }
+      ).then(result => {
+        console.log('got result: ', result);
+        const subTaskMap = taskArrayToMap(result.data);
+        console.log('subTaskMap', subTaskMap)
+        setSubTasks(subTaskMap);
+      })
+    }
+    readTasksByProjectId();
+  }, [ subTasks, projectId ]);
+
+  if (!!!project || !!!subTasks) {
+    return <div> Loading...</div>
+  }
 
   const taskPath = (parentTaskId && parentTaskId !== projectId) ? findPath(project, parentTaskId) : undefined;
 
