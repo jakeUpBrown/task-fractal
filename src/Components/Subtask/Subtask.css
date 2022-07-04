@@ -64,3 +64,15 @@
     align-items: center;
     justify-content: center;
 }
+
+.task-checkbox svg{
+    display: inline-block;
+    border: 1px solid transparent;
+    height: 16px;
+    width: 16px;
+    margin-left: -8px;
+    transition: opacity .15s cubic-bezier(.4,0,1,1);
+    margin-top: -8px;
+    pointer-events: none;
+    opacity: 0;
+}

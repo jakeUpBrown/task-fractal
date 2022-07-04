@@ -3,3 +3,12 @@
     flex-direction: column;
     
 }
+
+.project-row-container {
+    display: flex;
+    
+}
+
+.project-row-item {
+    margin: 0 5px;
+}

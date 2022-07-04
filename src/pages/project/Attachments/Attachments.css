@@ -1,0 +1,33 @@
+.attachments-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.attachment-row:hover > .delete-button {
+    display: flex;
+}
+
+.delete-button {
+    display:none;
+    color: grey;
+    height: 24px;
+    width: 24px;
+    margin-right: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.attachment-row {
+    display: flex;
+    min-width: 500px;
+}
+
+.attachment-type-label {
+    min-width:50px;
+    margin-right: 15px;
+}
+
+.attachment-name {
+    min-width: 300px;
+    margin-right: 15px;
+}

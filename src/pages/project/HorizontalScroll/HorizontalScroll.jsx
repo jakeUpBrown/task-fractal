@@ -2,7 +2,6 @@ import React from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 
 import { LeftArrow, RightArrow } from "./arrows";
-import { Card } from "./card";
 import "./globalStyles.css";
 import usePreventBodyScroll from "./usePreventBodyScroll";
 
@@ -26,10 +25,11 @@ function onWheel(apiObj, ev) {
   }
 }
 
-const App = ({
+const HorizontalScroll = ({
     subTaskTree,
     subTasks,
     sectionNames,
+    updateTaskCompleted
 }) => {
   const { disableScroll, enableScroll } = usePreventBodyScroll();
 
@@ -61,6 +61,7 @@ const App = ({
         subTaskTree={st} 
         itemId={`section-${idx}`} // NOTE: itemId is required for track items
         key={`section-${idx}`}
+        updateTaskCompleted={updateTaskCompleted}
         />
     )
   })
@@ -83,4 +84,4 @@ const App = ({
   );
 }
 
-export default App;
+export default HorizontalScroll;

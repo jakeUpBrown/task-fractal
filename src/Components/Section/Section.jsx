@@ -9,6 +9,7 @@ const Section = ({
     subTasks,
     subTaskTree,
     itemId,
+    updateTaskCompleted,
 }) => {
 
     const [showAddButton, setShowAddButton] = useState(false);
@@ -30,6 +31,7 @@ const Section = ({
             taskId={s.taskId}
             id={`subtask-${s.taskId}`}
             key={`subtask-${s.taskId}`}
+            updateTaskCompleted={updateTaskCompleted}
         />
         );
     })
@@ -51,8 +53,8 @@ const Section = ({
                 </h4>
             </div>
             <div
-                onMouseEnter={() => { console.log('settingg show add button'); setShowAddButton(true) }}
-                onMouseLeave={() => { console.log('hiding show add button'); setShowAddButton(false) }}
+                onMouseEnter={() => { setShowAddButton(true) }}
+                onMouseLeave={() => { setShowAddButton(false) }}
             >
                 {subTaskComponents}
                 {showAddButton ? <AddButton onClick={addButtonClicked}/> : null}
