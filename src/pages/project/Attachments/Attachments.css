@@ -1,6 +1,7 @@
 .attachments-container {
     display: flex;
     flex-direction: column;
+    margin-left: 15px;
 }
 
 .attachment-row:hover > .delete-button {

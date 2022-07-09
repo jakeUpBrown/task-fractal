@@ -2,6 +2,7 @@ import React, { useReducer } from 'react'
 import ReactDropdown from 'react-dropdown'
 import { AttachmentType } from '../../../../Utils/constants'
 import axios from 'axios'
+import { genRanHex } from '../../../../Utils/idUtils'
 
 const getAttachmentTypeFromUrl = (url) => {
     if (!!!url) return;
@@ -74,7 +75,7 @@ const AddAttachment = ({
     e.preventDefault()
     console.log(inputValues)
     // create the attachment and add to 
-    const id = "12345"
+    const id = genRanHex(10)
     const attachment = {
       id,
       projectId,

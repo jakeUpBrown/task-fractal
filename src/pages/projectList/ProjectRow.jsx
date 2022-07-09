@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import './ProjectList.css'
 
 const ProjectRow = ({
     id,
     isCompleted,
-    name,
+    title,
     updateProjectCompleted,
 }) => {
-
-  return (
+    return (
         <div className='project-row-container'>
-        <div 
-            className='project-row-item'
-            onClick={(e) => updateProjectCompleted(e, id, !isCompleted)}
-        >
-            {isCompleted ? 'X' : 'O'}
+            <div
+                className='project-row-item'
+                onClick={(e) => updateProjectCompleted(e, id, !isCompleted)}
+            >
+                {isCompleted ? 'X' : 'O'}
+            </div>
+            <Link
+                className='project-link project-row-item'
+                to={`/project/${id}`}
+            >
+                {title}
+            </Link>
         </div>
-        <Link 
-            className='project-link project-row-item'
-            to={`/project/${id}`} 
-        >
-            {name}
-        </Link>
-        </div>
-  )
+    )
 }
 export default React.memo(ProjectRow);

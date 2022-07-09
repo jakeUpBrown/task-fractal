@@ -76,22 +76,6 @@ const Navbar = () => {
                 </i>Home
               </NavLink>
             </li>
-
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/calendar">
-                <i 
-                className="far fa-address-book">
-                </i>Calendar
-              </NavLink> 
-            </li>
-
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/taskList">
-                <i 
-                className="far fa-clone">
-                </i>Task List
-              </NavLink>
-            </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/projectList">
                 <i 

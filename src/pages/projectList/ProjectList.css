@@ -1,14 +1,24 @@
 .project-list-container {
     display: flex;
     flex-direction: column;
-    
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
 
 .project-row-container {
     display: flex;
-    
+    margin-left: 10px;
 }
 
 .project-row-item {
     margin: 0 5px;
+    font-style:normal;
+    font-size: medium;
+}
+
+.project-list-subtype-container {
+    margin-left: 10px;
+    font-style: italic;
+    font-size: small;
 }

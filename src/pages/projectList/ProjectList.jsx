@@ -4,10 +4,12 @@ import axios from 'axios'
 import AddProject from './AddProject/AddProject'
 import './ProjectList.css'
 import ProjectRow from './ProjectRow'
+import TypeList from './TypeList'
 
 const ProjectList = () => {
   const [projects, setProjects] = useState();
   const [error, setError] = useState()
+
   useEffect(() => {
     if (!!projects) {
       console.log('already loaded projects');
@@ -55,19 +57,56 @@ const ProjectList = () => {
     })
   }
 
+  // sort projects into buckets by type
+  // check if project has any subtypes
+  const typeLists = {}
+  const noTypeList = []
+
+  projects.forEach(project => {
+    if ('type' in project && project.type) {
+      if (!(project.type in typeLists)) {
+        typeLists[project.type] = []
+      }
+      typeLists[project.type].push(project)
+    } else {
+      noTypeList.push(project)
+    }
+  })
+
+  console.log('typeLists', typeLists)
+  console.log('noTypeList', noTypeList)
+
+
+  const typeComponents = (typeLists) ?
+    Object.entries(typeLists).map(([type, projectList]) => {
+      console.log('type', type)
+      console.log('projectList', projectList)
+      return (<TypeList
+        type={type}
+        projects={projectList}
+        updateProjectCompleted={updateProjectCompleted}
+      />)
+    }
+    )
+    : null;
+
+  const noTypeComponents = (noTypeList) ?
+    noTypeList.map(project =>
+      <ProjectRow
+        {...project}
+        updateProjectCompleted={updateProjectCompleted}
+      />
+    )
+    : null;
+
+  console.log('noTypeComponents', noTypeComponents)
+  console.log('typeComponents', typeComponents)
+
   return (
     <div className="project-list-container">
-
-      {projects.map(project =>
-        <ProjectRow
-          key={`project-row-id-${project.id}`}
-          name={project.name}
-          id={project.id}
-          isCompleted={project.isCompleted}
-          updateProjectCompleted={updateProjectCompleted}
-        />)}
-      <br />
-      <br />
+      {typeComponents}
+      {noTypeComponents ? (<div>{'(no type)'}</div>) : null}
+      {noTypeComponents}
       <AddProject />
     </div>
   )

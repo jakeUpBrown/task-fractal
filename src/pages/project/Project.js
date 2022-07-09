@@ -6,41 +6,7 @@ import HorizontalScroll from './HorizontalScroll/HorizontalScroll'
 import ProjectTitle from './ProjectTitle/ProjectTitle';
 import axios from "axios";
 import Attachments from './Attachments/Attachments';
-
-// https://p0ts58nd3h.execute-api.us-west-1.amazonaws.com/prod/readProject
-// Finds path of taskId to parentTaskId
-const findPath = (ob, key) => {
-  const path = [];
-  const keyExists = (obj) => {
-    if (!obj || (typeof obj !== "object" && !Array.isArray(obj))) {
-      return false;
-    }
-    if (obj.hasOwnProperty(key)) {
-      return true;
-    }
-    const subTaskTree = obj.subTaskTree;
-    if (!subTaskTree) {
-      return false;
-    }
-    if (subTaskTree && subTaskTree.hasOwnProperty(key)) {
-      return true;
-    }
-
-    // get subTaskTree and search all of the id's.
-    for (const k in subTaskTree) {
-      path.push(k);
-      const result = keyExists(subTaskTree[k], key);
-      if (result) {
-        return result;
-      }
-    }
-
-    return false;
-  };
-
-  keyExists(ob);
-  return path;
-}
+import { findPath } from '../../Utils/idUtils';
 
 const Project = () => {
 
@@ -55,9 +21,6 @@ const Project = () => {
   const [project, setProject] = useState();
   const [subTasks, setSubTasks] = useState();
   const [error, setError] = useState();
-  const createTaskForProject = (task, parentTaskId) => {
-    // create task id
-  }
 
   useEffect(() => {
     console.log('useEffect project', project);
@@ -75,7 +38,7 @@ const Project = () => {
       })
     }
     readProject();
-  }, [ projectId, project ]);
+  }, [projectId, project]);
 
   useEffect(() => {
     console.log('useEffect subTasks', subTasks);
@@ -95,7 +58,7 @@ const Project = () => {
       })
     }
     readTasksByProjectId();
-  }, [ subTasks, projectId ]);
+  }, [subTasks, projectId]);
 
   if (!!!project || !!!subTasks) {
     return <div> Loading...</div>
@@ -103,7 +66,7 @@ const Project = () => {
   if (error) {
     return <div>Error: {error}</div>
   }
-  const taskPath = (parentTaskId && parentTaskId !== projectId) ? findPath(project, parentTaskId) : undefined;
+  const taskPath = (parentTaskId && parentTaskId !== projectId) ? findPath(project.subTaskTree, parentTaskId) : undefined;
 
   const {
     subTaskTree,
@@ -113,6 +76,8 @@ const Project = () => {
   let currentSectionNames = sectionNames;
   let currentSubTaskTree = subTaskTree;
   if (parentTaskId) {
+    console.log('taskPath', taskPath)
+    // TODO need to do more digging to find currentSubTaskTree
     taskPath.forEach((taskId) => {
       currentSubTaskTree = currentSubTaskTree[taskId].subTaskTree
     })
@@ -150,17 +115,82 @@ const Project = () => {
     })
   }
 
+  const updateProjectInfo = (newValues) => {
+    console.log('update project info', newValues)
+    var newProject = {};
+    Object.assign(newProject, project)
+    newProject = {
+      ...newProject,
+      ...newValues,
+    }
+
+    setProject(newProject)
+    axios.post(
+      'https://p0ts58nd3h.execute-api.us-west-1.amazonaws.com/prod/updateprojectinfo',
+      {
+        projectId,
+        ...newValues,
+      }
+    ).then(result => {
+      console.log('project updated successfully: ', result);
+    }).catch(err => {
+      console.log(err)
+      setError(err.message);
+    })
+  }
+
+  const updateTaskInfo = (taskId, newValues) => {
+    console.log('update task values', newValues)
+    var newSubTask = {};
+    Object.assign(newSubTask, subTasks[taskId])
+    newSubTask = {
+      ...newSubTask,
+      ...newValues,
+    }
+
+    var newSubTasks = {};
+    Object.assign(newSubTasks, subTasks)
+    newSubTasks[taskId] = newSubTask
+
+    setSubTasks(newSubTasks)
+    axios.post(
+      'https://p0ts58nd3h.execute-api.us-west-1.amazonaws.com/prod/updatetaskinfo',
+      {
+        projectId,
+        taskId,
+        ...newValues,
+      }
+    ).then(result => {
+      console.log('task updated successfully: ', result);
+    }).catch(err => {
+      console.log(err)
+      setError(err.message);
+    })
+  }
+
   // TODO: add structure to pull project.json and tasks.json info from path params project 
   // TODO: change the context to be the parentTaskId param as the parent task
   return (
     <div className="container2">
-      <ProjectTitle taskPath={taskPath} project={project} parentTaskId={parentTaskId} subTasks={subTasks}/>
+      <ProjectTitle
+        taskPath={taskPath}
+        project={project}
+        parentTaskId={parentTaskId}
+        subTasks={subTasks}
+        updateProjectInfo={updateProjectInfo}
+        updateTaskInfo={updateTaskInfo}
+      />
       <div className='subTaskContainer'>
-        <HorizontalScroll 
-        subTaskTree={currentSubTaskTree} 
-        subTasks={subTasks} 
-        sectionNames={currentSectionNames} 
-        updateTaskCompleted={updateTaskCompleted}
+        <HorizontalScroll
+          project={project}
+          taskPath={taskPath}
+          parentTaskId={parentTaskId}
+          subTaskTree={currentSubTaskTree}
+          subTasks={subTasks}
+          sectionNames={currentSectionNames}
+          updateTaskCompleted={updateTaskCompleted}
+          updateTaskInfo={updateTaskInfo}
+          updateProjectInfo={updateProjectInfo}
         />
       </div>
       <Attachments projectId={projectId} />

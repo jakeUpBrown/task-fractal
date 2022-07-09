@@ -1,6 +1,6 @@
 {
     "projectId": "1",
-    "name": "Parent Task Name",
+    "title": "Parent Task Name",
     "type": "HOBBY",
     "subType": "WOODWORKING",
     "apprLength": {
@@ -70,4 +70,81 @@
             "idx": 0
         }
     }
+}
+
+
+{
+    "dueDate": "2022-05-28",
+    "priority": "HIGH",
+    "name": "Parent Task Name",
+    "isCompleted": false,
+    "sectionNames": [
+        "Make design",
+        "Section 2"
+    ],
+    "subType": "WOODWORKING",
+    "subTaskTree": {
+        "t4": {
+            "idx": 0,
+            "sectionIdx": 1
+        },
+        "t5": {
+            "idx": 0,
+            "sectionIdx": 2
+        },
+        "t6": {
+            "idx": 0,
+            "sectionIdx": 3
+        },
+        "t7": {
+            "idx": 0,
+            "sectionIdx": 4
+        },
+        "t8": {
+            "idx": 0,
+            "sectionIdx": 5
+        },
+        "t9": {
+            "idx": 0,
+            "sectionIdx": 6
+        },
+        "t1": {
+            "sectionIdx": 0,
+            "idx": 0,
+            "subTaskTree": {
+                "t15": {
+                    "idx": 1,
+                    "sectionIdx": 0
+                },
+                "t2": {
+                    "sectionIdx": 0,
+                    "idx": 0,
+                    "subTaskTree": {
+                        "t10": {
+                            "idx": 0,
+                            "sectionIdx": 0
+                        }
+                    },
+                    "sectionNames": [
+                        "Subsection 4"
+                    ]
+                }
+            },
+            "sectionNames": [
+                "Subsection 1"
+            ]
+        },
+        "t3": {
+            "idx": 1,
+            "sectionIdx": 0
+        }
+    },
+    "description": "This can be a lengthier description of what the task needs 14",
+    "id": "1",
+    "apprLength": {
+        "value": 1,
+        "unit": "DAY"
+    },
+    "title": "Make mantel inlays for GBev - test edit",
+    "type": "HOBBY"
 }

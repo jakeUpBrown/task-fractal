@@ -8,7 +8,7 @@ import usePreventBodyScroll from "./usePreventBodyScroll";
 // NOTE: embrace power of CSS flexbox!
 import "./hideScrollbar.css";
 import Section from "../../../Components/Section/Section";
-import AddButton from "../../../Components/AddButton/AddButton";
+import AddButton from "../../../Components/Icons/AddButton";
 
 function onWheel(apiObj, ev) {
   const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
@@ -26,45 +26,58 @@ function onWheel(apiObj, ev) {
 }
 
 const HorizontalScroll = ({
-    subTaskTree,
-    subTasks,
-    sectionNames,
-    updateTaskCompleted
+  project,
+  taskPath, 
+  parentTaskId,
+  subTaskTree,
+  subTasks,
+  sectionNames,
+  updateTaskCompleted,
+  updateTaskInfo,
+  updateProjectInfo,
 }) => {
   const { disableScroll, enableScroll } = usePreventBodyScroll();
 
-  if (!subTaskTree) {
-      return (<div>No Subtasks</div> )
-  }
-  const numSections = Math.max(...Object.values(subTaskTree).map(o => o.sectionIdx)) + 1
-  const sectionTasks = Array.from(Array(numSections), () => Array(0))
-  // for each section, create a Section Component and add to the page
-  Object.entries(subTaskTree).forEach(element => {
-    const taskId = element[0]
-    const obj = element[1]
+  var sections = null;
+  if (subTaskTree || sectionNames) {
+    let numSections = Math.max(...Object.values(subTaskTree).map(o => o.sectionIdx)) + 1
+    numSections = Math.max(numSections, (sectionNames ? sectionNames.length : 0))
+    const sectionTasks = Array.from(Array(numSections), () => Array(0))
+    // for each section, create a Section Component and add to the page
+    Object.entries(subTaskTree).forEach(element => {
+      const taskId = element[0]
+      const obj = element[1]
 
-    const {
-      sectionIdx,
-    } = obj
+      const {
+        sectionIdx,
+      } = obj
 
-    sectionTasks[sectionIdx].push({
-      ...obj,
-      taskId,
+      sectionTasks[sectionIdx].push({
+        ...obj,
+        taskId,
+      });
     });
-  });
 
-  const sections = sectionTasks.map((st, idx) => {
-    return (
-        <Section 
-        sectionName={sectionNames[idx]}
-        subTasks={subTasks} 
-        subTaskTree={st} 
-        itemId={`section-${idx}`} // NOTE: itemId is required for track items
-        key={`section-${idx}`}
-        updateTaskCompleted={updateTaskCompleted}
+    sections = sectionTasks.map((st, idx) => {
+      const uniqueKey = `section-${parentTaskId ? parentTaskId : 'root'}-${idx}`
+      return (
+        <Section
+          project={project}
+          taskPath={taskPath}
+          parentTaskId={parentTaskId}
+          sectionIdx={idx}
+          sectionNames={sectionNames}
+          subTasks={subTasks}
+          subTaskTree={st}
+          itemId={uniqueKey} // NOTE: itemId is required for track items
+          key={uniqueKey}
+          updateTaskCompleted={updateTaskCompleted}
+          updateTaskInfo={updateTaskInfo}
+          updateProjectInfo={updateProjectInfo}
         />
-    )
-  })
+      )
+    })
+  }
 
   return (
     <>

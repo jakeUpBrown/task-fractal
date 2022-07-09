@@ -1,7 +1,7 @@
 [
     {
         "projectId": "1",
-        "name": "Woodworking Task Example",
+        "title": "Woodworking Task Example",
         "type": "HOBBY",
         "subType": "WOODWORKING",
         "apprLength": {
@@ -14,7 +14,7 @@
     },
     {
         "projectId": "2",
-        "name": "Work task example",
+        "title": "Work task example",
         "type": "WORK",
         "apprLength": {
             "value": 1,

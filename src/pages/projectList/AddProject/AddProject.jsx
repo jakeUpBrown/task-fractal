@@ -4,6 +4,7 @@ import { ProjectSubtype, ProjectType } from '../../../Utils/constants'
 import axios from 'axios'
 import './AddProject.css'
 import { useNavigate } from 'react-router-dom';
+import { genRanHex } from '../../../Utils/idUtils'
 
 const AddProject = () => {
     const formInitialState = {
@@ -41,14 +42,14 @@ const AddProject = () => {
         e.preventDefault()
         console.log(inputValues)
         // create the attachment and add to 
-        const id = "12345"
+        const id = genRanHex(10)
         axios.post(
             'https://p0ts58nd3h.execute-api.us-west-1.amazonaws.com/prod/createproject',
             { 
                 id,
                 type,
                 subType,
-                name: title,
+                title,
                 isFinished: false,
             }
           ).then(result => {

@@ -1,16 +1,20 @@
-.subtask-container {
-    margin: 4px 0;
-    border: 1px solid black;
+.top-level-subtask-container > .subtask-container {
+    margin-bottom: 0;
 }
 
 .top-level-subtask {
-    margin-bottom: 10px;
+    margin-bottom: 25px;
     border-radius:5px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-.subtask-container:not(.top-level-subtask) {
+.subtask-content {
+    margin: 4px 0;
+    border: 1px solid black;
+}
+
+.subtask-content:not(.top-level-subtask) {
     margin: 0;
     margin-bottom:10px;
     margin-top:10px;
@@ -20,13 +24,14 @@
     border-top: 1px solid black;
 }
 
-.subtask-container:not(.top-level-subtask):last-of-type {
+.subtask-content:not(.top-level-subtask):last-of-type {
     margin-bottom:0px;
     border-bottom: 0;
 }
 
 .subtask-title {
     width: 100%;
+    min-height: 30px;
     background-color: #DDDDDD;
     font-weight: bold;
     display: flex;
@@ -47,7 +52,8 @@
     position: relative;
     margin-left: auto;
     margin-right: 10px;
-    width: 28px;
+    width: 25px;
+    text-align: right;
     flex-shrink: 0;
     padding: 2px;
 }
@@ -75,4 +81,20 @@
     margin-top: -8px;
     pointer-events: none;
     opacity: 0;
+}
+
+.subtask-link-icon {
+    margin-right: auto;
+    height:min-content;
+    width: min-content;
+}
+
+.subtask-link-container {
+    width: 100%;
+    display: flex;
+}
+
+.subtask-options-container {
+    width: 30px;
+    margin-left: auto;
 }
