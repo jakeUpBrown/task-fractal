@@ -10,6 +10,10 @@
     background-color: #fafafae5;
 }
 
+.add-section-button {
+    display: flex;
+}
+
 .section-header-container {
     display:flex;
     flex-direction: column;
@@ -18,8 +22,15 @@
 .section-header-contents {
     display: flex;
     width: 100%;
+    min-height: 27px;
+    font-weight: 500;
 }
 
 .icon_menu_item__icon {
     margin-left: auto;
+}
+
+.section-name-edit-text {
+    width: 100%;
+    height: fit-content;
 }

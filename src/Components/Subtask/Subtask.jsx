@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import '../../pages/project/Project.css'
 import AddButton from '../Icons/AddButton'
 import Pencil from '../Icons/Pencil'
+import AddSubtaskModal from '../Modals/AddSubtask/AddSubtaskModal'
 import './Subtask.css'
 
 const Subtask = ({
@@ -14,7 +15,11 @@ const Subtask = ({
     updateTaskCompleted,
     updateTaskInfo,
     subTasks,
+    taskPath,
+    parentTaskId,
+    sectionIdx,
     idx,
+    createTask,
 }) => {
 
 
@@ -208,7 +213,15 @@ const Subtask = ({
                     {subTaskComponents}
                 </div>
             </div>
-            {!isSubtask ? <AddButton isVisibleContent={(isHover)} /> : null}
+            {!isSubtask ?
+                <AddSubtaskModal trigger={<AddButton isVisibleContent={(isHover)} />}
+                    taskPath={taskPath}
+                    parentTaskId={parentTaskId}
+                    sectionIdx={sectionIdx}
+                    idx={idx+1}
+                    createTask={createTask}
+                />
+                : null}
         </div>
     );
 

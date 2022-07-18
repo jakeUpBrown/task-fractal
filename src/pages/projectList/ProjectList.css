@@ -22,3 +22,11 @@
     font-style: italic;
     font-size: small;
 }
+
+.create-project-button {
+    margin:10px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 3px;
+    width: fit-content;
+}

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import axios from 'axios'
-import AddProject from './AddProject/AddProject'
 import './ProjectList.css'
 import ProjectRow from './ProjectRow'
 import TypeList from './TypeList'
+import AddProjectModal from '../../Components/Modals/AddProject/AddProjectModal'
 
 const ProjectList = () => {
   const [projects, setProjects] = useState();
@@ -107,7 +106,9 @@ const ProjectList = () => {
       {typeComponents}
       {noTypeComponents ? (<div>{'(no type)'}</div>) : null}
       {noTypeComponents}
-      <AddProject />
+      <AddProjectModal 
+        trigger={<span className='create-project-button'>Create Project</span>}
+      />
     </div>
   )
 }

@@ -33,12 +33,14 @@
     width: 100%;
     min-height: 30px;
     background-color: #DDDDDD;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: medium;
     display: flex;
 }
 
 .subtask-description {
     padding: 0 10px;
+    font-size: small;
 }
 
 .completed-button-container {

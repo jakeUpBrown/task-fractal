@@ -4,6 +4,7 @@ import { VisibilityContext } from "react-horizontal-scrolling-menu";
 import Subtask from '../Subtask/Subtask'
 import AddButton from '../Icons/AddButton';
 import Pencil from '../Icons/Pencil';
+import AddSubtaskModal from '../Modals/AddSubtask/AddSubtaskModal';
 
 const Section = ({
     project,
@@ -17,6 +18,7 @@ const Section = ({
     updateTaskCompleted,
     updateTaskInfo,
     updateProjectInfo,
+    createTask,
 }) => {
 
     const sectionName = sectionNames ? sectionNames[sectionIdx] : ''
@@ -29,7 +31,11 @@ const Section = ({
 
     const visible = visibility.isItemVisible(itemId);
 
-    const subTaskComponents = !!subTaskTree && subTaskTree.map((s, idx) => {
+    console.log('subTaskTree before sort', subTaskTree)
+    const sortedSubTaskTree = subTaskTree.sort((a,b) => {console.log('a', a.idx); console.log('b', b.idx); return (a.idx - b.idx)})
+    console.log('sortedSubTaskTree', sortedSubTaskTree)
+    console.log('subTaskTree after sort', subTaskTree)
+    const subTaskComponents = !!subTaskTree && subTaskTree.sort((a,b) => a.idx > b.idx).map((s, idx) => {
         const {
             subTaskTree: subsubTaskTree,
             sectionNames,
@@ -38,21 +44,19 @@ const Section = ({
             subTaskTree={subsubTaskTree}
             sectionNames={sectionNames}
             idx={idx}
+            sectionIdx={sectionIdx}
             subTasks={subTasks}
             taskId={s.taskId}
             id={`subtask-${s.taskId}`}
             key={`subtask-${s.taskId}`}
             updateTaskCompleted={updateTaskCompleted}
             updateTaskInfo={updateTaskInfo}
+            taskPath={taskPath}
+            parentTaskId={parentTaskId}
+            createTask={createTask}
         />
         );
     })
-
-    const addButtonClicked = (event) => {
-        event.stopPropagation();
-        event.preventDefault();
-        console.log('add button clicked')
-    }
 
     const pencilClicked = (e) => {
         e.preventDefault();
@@ -77,10 +81,10 @@ const Section = ({
             Object.assign(newSubTaskTree, project.subTaskTree)
             // get the object that's holding the sectionNames
             var currentObj = newSubTaskTree
-            taskPath.forEach(tid => {currentObj = currentObj[tid].subTaskTree})
-            currentObj[parentTaskId].sectionNames = newSectionNames        
+            taskPath.forEach(tid => { currentObj = currentObj[tid].subTaskTree })
+            currentObj[parentTaskId].sectionNames = newSectionNames
             updateProjectInfo(
-                { subTaskTree: newSubTaskTree}
+                { subTaskTree: newSubTaskTree }
             )
         } else {
             updateProjectInfo(
@@ -108,7 +112,7 @@ const Section = ({
             >
                 <div className='section-header-contents'>
                     {isEditable ? (
-                        <div>
+                        <div className='section-name-edit-text'>
                             <textarea
                                 type="text"
                                 name="newSectionName"
@@ -131,7 +135,14 @@ const Section = ({
                         : (isTitleHover ? <Pencil onClick={pencilClicked} /> : null)
                     }
                 </div>
-                <AddButton isVisibleContent={isTitleHover} onClick={addButtonClicked}/>
+                <AddSubtaskModal
+                    trigger={<AddButton isVisibleContent={(isTitleHover)} />}
+                    taskPath={taskPath}
+                    parentTaskId={parentTaskId}
+                    sectionIdx={sectionIdx}
+                    idx={0}
+                    createTask={createTask}
+                />
             </div>
             <div className='top-level-subtask-container'>
                 {subTaskComponents}

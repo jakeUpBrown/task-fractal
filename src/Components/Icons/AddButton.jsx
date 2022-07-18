@@ -1,23 +1,22 @@
 import React from 'react'
 import './AddButton.css';
 
-const AddButton = ({
-    onClick,
-    isVisibleContent = true,
-}) => {
-
-    return (
-        <div
-            onClick={onClick}
-            className={'add-button-container'}
-        >
+class AddButton extends React.Component {
+    render() {
+        return (
             <div
-                className={`add-button-content ${isVisibleContent ? '' : 'add-button-hidden'}`}
+                onClick={this.props.onClick}
+                className={'add-button-container'}
             >
-                <span>+</span>
+                <div
+                    className={`add-button-content ${this.props.isVisibleContent ? '' : 'add-button-hidden'}`}
+                >
+                    <span>+</span>
+                </div>
             </div>
-        </div>
 
-    )
+        )
+    }
 }
+
 export default AddButton;

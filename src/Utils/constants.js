@@ -6,6 +6,7 @@ export const AttachmentType = {
     CONCEPTS:{ value: 'CONCEPTS', label: 'Concepts' },
     GITHUB: { value: 'GITHUB', label: 'Github' },
     SKETCHUP: { value: 'SKETCHUP', label: 'Sketchup' },
+    YOUTUBE: { value: 'YOUTUBE', label: 'Youtube' },
 }
 
 export const ProjectType = {

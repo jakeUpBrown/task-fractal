@@ -8,7 +8,7 @@ import usePreventBodyScroll from "./usePreventBodyScroll";
 // NOTE: embrace power of CSS flexbox!
 import "./hideScrollbar.css";
 import Section from "../../../Components/Section/Section";
-import AddButton from "../../../Components/Icons/AddButton";
+import AddSectionButton from "../../../Components/Section/AddSectionButton";
 
 function onWheel(apiObj, ev) {
   const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
@@ -27,57 +27,59 @@ function onWheel(apiObj, ev) {
 
 const HorizontalScroll = ({
   project,
-  taskPath, 
+  taskPath,
   parentTaskId,
   subTaskTree,
   subTasks,
   sectionNames,
+  numSections,
   updateTaskCompleted,
   updateTaskInfo,
   updateProjectInfo,
+  createTask,
 }) => {
   const { disableScroll, enableScroll } = usePreventBodyScroll();
 
   var sections = null;
-  if (subTaskTree || sectionNames) {
-    let numSections = Math.max(...Object.values(subTaskTree).map(o => o.sectionIdx)) + 1
-    numSections = Math.max(numSections, (sectionNames ? sectionNames.length : 0))
-    const sectionTasks = Array.from(Array(numSections), () => Array(0))
-    // for each section, create a Section Component and add to the page
+  const sectionTasks = Array.from(Array(numSections), () => Array(0))
+  // for each section, create a Section Component and add to the page
+  if (subTaskTree) {
     Object.entries(subTaskTree).forEach(element => {
       const taskId = element[0]
       const obj = element[1]
-
+  
       const {
         sectionIdx,
       } = obj
-
+  
       sectionTasks[sectionIdx].push({
         ...obj,
         taskId,
       });
     });
-
-    sections = sectionTasks.map((st, idx) => {
-      const uniqueKey = `section-${parentTaskId ? parentTaskId : 'root'}-${idx}`
-      return (
-        <Section
-          project={project}
-          taskPath={taskPath}
-          parentTaskId={parentTaskId}
-          sectionIdx={idx}
-          sectionNames={sectionNames}
-          subTasks={subTasks}
-          subTaskTree={st}
-          itemId={uniqueKey} // NOTE: itemId is required for track items
-          key={uniqueKey}
-          updateTaskCompleted={updateTaskCompleted}
-          updateTaskInfo={updateTaskInfo}
-          updateProjectInfo={updateProjectInfo}
-        />
-      )
-    })
   }
+
+  sections = sectionTasks.map((st, idx) => {
+    const uniqueKey = `section-${parentTaskId ? parentTaskId : 'root'}-${idx}`
+    return (
+      <Section
+        project={project}
+        taskPath={taskPath}
+        parentTaskId={parentTaskId}
+        sectionIdx={idx}
+        sectionNames={sectionNames}
+        subTasks={subTasks}
+        subTaskTree={st}
+        itemId={uniqueKey} // NOTE: itemId is required for track items
+        key={uniqueKey}
+        updateTaskCompleted={updateTaskCompleted}
+        updateTaskInfo={updateTaskInfo}
+        updateProjectInfo={updateProjectInfo}
+        createTask={createTask}
+      />
+    )
+  })
+
 
   return (
     <>
@@ -89,7 +91,13 @@ const HorizontalScroll = ({
             onWheel={onWheel}
           >
             {sections}
-            <AddButton />
+            <AddSectionButton
+              project={project}
+              taskPath={taskPath}
+              parentTaskId={parentTaskId}
+              numSections={numSections}
+              updateProjectInfo={updateProjectInfo}
+            />
           </ScrollMenu>
         </div>
       </div>

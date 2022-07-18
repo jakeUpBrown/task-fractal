@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import axios from 'axios'
-import AddAttachment from './AddAttachment/AddAttachment'
 import './Attachments.css'
 import Attachment from './Attachment'
+import AddAttachmentModal from '../../../Components/Modals/AddAttachment/AddAttachmentModal'
 
 const Attachments = (
-    {
-        projectId,
-    }
+  {
+    projectId,
+  }
 ) => {
   const [attachments, setAttachments] = useState();
 
@@ -27,7 +26,7 @@ const Attachments = (
       })
     }
     readAttachments();
-  }, [ attachments, projectId ]);
+  }, [attachments, projectId]);
 
   if (!!!attachments) {
     return <div>Loading...</div>
@@ -36,35 +35,38 @@ const Attachments = (
   const addAttachment = (attachment) => {
 
     setAttachments([
-        ...attachments,
-        attachment,
+      ...attachments,
+      attachment,
     ])
   }
 
   const deleteAttachment = (id) => {
     const idx = attachments.findIndex((att) => att.id === id)
     const newAttachments = attachments.slice(0)
-    newAttachments.splice(idx,1)
+    newAttachments.splice(idx, 1)
     setAttachments(newAttachments)
   }
 
   return (
-  <div className="attachments-container">
-    <h6>attachments:</h6>
-    {attachments.map(att => {
+    <div className="attachments-container">
+      <div className="attachments-header">
+        <span>ATTACHMENTS</span>
+        <AddAttachmentModal
+          trigger={<span className='add-attachment-button'>+</span>}
+          projectId={projectId}
+          addAttachment={addAttachment}
+        />
+      </div>
+      {attachments.map(att => {
         return (
-            <Attachment 
-              key={`attachment-${att.id}`}
-                deleteAttachment={deleteAttachment}
-                {...att}
-            />
+          <Attachment
+            key={`attachment-${att.id}`}
+            deleteAttachment={deleteAttachment}
+            {...att}
+          />
         )
-    })}
-    <AddAttachment 
-        projectId={projectId}
-        addAttachment={addAttachment}
-    />
-  </div>
+      })}
+    </div>
   )
 }
 export default React.memo(Attachments);

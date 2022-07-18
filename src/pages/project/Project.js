@@ -71,9 +71,11 @@ const Project = () => {
   const {
     subTaskTree,
     sectionNames,
+    numSections,
   } = project
 
   let currentSectionNames = sectionNames;
+  let currentNumSections = numSections;
   let currentSubTaskTree = subTaskTree;
   if (parentTaskId) {
     console.log('taskPath', taskPath)
@@ -81,7 +83,8 @@ const Project = () => {
     taskPath.forEach((taskId) => {
       currentSubTaskTree = currentSubTaskTree[taskId].subTaskTree
     })
-    currentSectionNames = currentSubTaskTree[parentTaskId].sectionNames;
+    currentSectionNames = currentSubTaskTree[parentTaskId].sectionNames
+    currentNumSections = currentSubTaskTree[parentTaskId].numSections
     currentSubTaskTree = currentSubTaskTree[parentTaskId].subTaskTree
     // traverse path using taskPath and replace
   }
@@ -168,10 +171,102 @@ const Project = () => {
     })
   }
 
-  // TODO: add structure to pull project.json and tasks.json info from path params project 
-  // TODO: change the context to be the parentTaskId param as the parent task
+  const createTask = ({
+    newTask,
+    taskPath,
+    parentTaskId,
+    sectionIdx,
+    idx,
+  }) => {
+    const {
+      taskId,
+    } = newTask
+
+    const {
+      type,
+      subType,
+    } = project
+
+    // load new task with project defaults. any default will be overwritten if included in the newTask obj
+    const newTaskWithProjectDefaults =
+    {
+      projectId,
+      type,
+      subType,
+      isCompleted: false,
+      ...newTask,
+    }
+
+    // find the currentSubTaskTree using taskPath and parentTaskId
+    // add task to subtasktree, increment any tasks with sectionIdx === currentSectionIdx and idx >= newIdx
+    var newSubTaskTree = {}
+    Object.assign(newSubTaskTree, subTaskTree)
+    var currentObj = newSubTaskTree
+
+    if (taskPath) {
+      taskPath.forEach(tid => { currentObj = currentObj[tid].subTaskTree })
+    }
+    if (parentTaskId) {
+      // get the object that's holding the sectionNames
+      if (!(subTaskTree in currentObj[parentTaskId])) {
+        currentObj[parentTaskId].subTaskTree = {}
+      }
+      currentObj = currentObj[parentTaskId].subTaskTree
+    }
+    // currentObj should hold the subTaskTree that needs editing
+    // go through each entry and if entry.sectionIdx = sectionIdx && entry.idx >= idx, then increment idx
+
+    Object.values(currentObj).forEach(t => {
+      const {
+        idx: tIdx,
+        sectionIdx: tSectionIdx,
+      } = t
+      console.log('tIdx, tSectionIdx', tIdx, tSectionIdx)
+      if (tSectionIdx === sectionIdx && tIdx >= idx) {
+        console.log('found idx to increment')
+        t.idx = tIdx + 1
+      }
+    })
+
+    // add subTask obj under the current id
+    currentObj[taskId] = {
+      idx,
+      sectionIdx,
+    }
+
+    console.log('old subTaskTree', subTaskTree)
+    console.log('new subTaskTree', newSubTaskTree)
+    console.log('currentObj', currentObj)
+
+    // add newTask to subTasks
+    const newSubTasks = {
+      ...subTasks,
+      [taskId]: { ...newTaskWithProjectDefaults }
+    }
+    setSubTasks(newSubTasks)
+    setProject({
+      ...project,
+      subTaskTree: newSubTaskTree,
+    })
+    axios.post(
+      'https://p0ts58nd3h.execute-api.us-west-1.amazonaws.com/prod/createtaskforproject',
+      {
+        task: newTaskWithProjectDefaults,
+        projectId,
+        subTaskTree: newSubTaskTree,
+      }
+    ).then(result => {
+      console.log('task created successfully: ', result);
+    }).catch(err => {
+      console.log(err)
+      setError(err.message);
+    })
+
+  }
+
   return (
     <div className="container2">
+      <Attachments projectId={projectId} />
       <ProjectTitle
         taskPath={taskPath}
         project={project}
@@ -188,12 +283,13 @@ const Project = () => {
           subTaskTree={currentSubTaskTree}
           subTasks={subTasks}
           sectionNames={currentSectionNames}
+          numSections={currentNumSections}
           updateTaskCompleted={updateTaskCompleted}
           updateTaskInfo={updateTaskInfo}
           updateProjectInfo={updateProjectInfo}
+          createTask={createTask}
         />
       </div>
-      <Attachments projectId={projectId} />
     </div>
   )
 }
