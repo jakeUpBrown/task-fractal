@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
+import OptionsButton from '../../../Components/Icons/OptionsButton/OptionsButton'
 import Pencil from '../../../Components/Icons/Pencil'
 import '../Project.css'
+import ProjectOptions from './ProjectOptions/ProjectOptions'
 import './ProjectTitle.css'
 
 const ProjectTitle = ({
@@ -11,6 +13,7 @@ const ProjectTitle = ({
     subTasks,
     updateProjectInfo,
     updateTaskInfo,
+    deleteProject,
 }) => {
 
     const description = parentTaskId ? subTasks[parentTaskId].description : project.description
@@ -64,7 +67,7 @@ const ProjectTitle = ({
     const [newDescription, setNewDescription] = useState(description)
     const [showEditTitleButton, setShowEditTitleButton] = useState(false)
 
-    useEffect( () => {
+    useEffect(() => {
         setIsEditable(false)
         setNewTitle(title)
         setNewDescription(description)
@@ -100,32 +103,36 @@ const ProjectTitle = ({
         setIsEditable(!isEditable)
     }
 
+    const toggleIsEditable = () => {
+        setIsEditable(!isEditable)
+    }
+
     return (
         <header className="project-header">
             <div
-                                onMouseEnter={() => { setShowEditTitleButton(true) }}
-                                onMouseLeave={() => { setShowEditTitleButton(false) }}
-                
+                onMouseEnter={() => { setShowEditTitleButton(true) }}
+                onMouseLeave={() => { setShowEditTitleButton(false) }}
+
             >
                 {
                     isEditable ?
                         (
-                                <div className='edit-project-info-container'>
-                                    <input
-                                        type="text"
-                                        name="newTitle"
-                                        value={newTitle}
-                                        className="edit-project-title"
-                                        onChange={newTitleChanged}
-                                    />
-                                    <textarea
-                                        type="text"
-                                        name="newDescription"
-                                        value={newDescription}
-                                        className="edit-project-description"
-                                        onChange={newDescriptionChanged}
-                                    />
-                                </div>
+                            <div className='edit-project-info-container'>
+                                <input
+                                    type="text"
+                                    name="newTitle"
+                                    value={newTitle}
+                                    className="edit-project-title"
+                                    onChange={newTitleChanged}
+                                />
+                                <textarea
+                                    type="text"
+                                    name="newDescription"
+                                    value={newDescription}
+                                    className="edit-project-description"
+                                    onChange={newDescriptionChanged}
+                                />
+                            </div>
                         ) :
                         (
                             <div>
@@ -137,18 +144,14 @@ const ProjectTitle = ({
                         )
                 }
                 <div className="project-header-settings">
-                    <div className='project-settings-button'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-                            <g fill="none" stroke="currentColor" strokeLinecap="round" transform="translate(3 10)">
-                                <circle cx="2" cy="2" r="2"></circle>
-                                <circle cx="9" cy="2" r="2"></circle>
-                                <circle cx="16" cy="2" r="2"></circle>
-                            </g>
-                        </svg>
-                    </div>
                     {
                         isEditable ? (<div onClick={saveClicked}>✓</div>)
-                        : showEditTitleButton ? (<Pencil onClick={() => setIsEditable(!isEditable)} />) : null
+                            : showEditTitleButton ?
+                                (<ProjectOptions
+                                    toggleIsEditable={toggleIsEditable}
+                                    deleteProject={deleteProject}
+                                />)
+                                : null
                     }
                 </div>
             </div>

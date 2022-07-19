@@ -1,0 +1,31 @@
+.project-settings-button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.options-button-popup-content {
+    border-radius: 5px;
+    padding: 0.5rem;
+    -webkit-animation: .3s cubic-bezier(.38, .1, .36, .9) forwards a;
+    background: #fff;
+    border: 1px solid #d7d7d7;
+    margin: auto;
+    width: 100px;
+}
+
+.menu {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+  }
+  .menu-item {
+    cursor: pointer;
+    padding: 5px;
+    height: 28px;
+    border-bottom: 1px solid rgb(187, 187, 187);
+  }
+  .menu-item:hover {
+    color: #2980b9;
+  }

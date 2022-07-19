@@ -1,0 +1,13 @@
+.options-row-container {
+    width: 100%;
+}
+
+.options-row-container > div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.options-row-title {
+    margin-right: auto;
+}

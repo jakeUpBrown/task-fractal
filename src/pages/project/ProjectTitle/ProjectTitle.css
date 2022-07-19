@@ -38,12 +38,6 @@
     min-width: 70px;
 }
 
-.project-settings-button {
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-}
-
 .edit-project-info-container {
     width: 100%;
 }

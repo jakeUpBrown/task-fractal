@@ -31,11 +31,7 @@ const Section = ({
 
     const visible = visibility.isItemVisible(itemId);
 
-    console.log('subTaskTree before sort', subTaskTree)
-    const sortedSubTaskTree = subTaskTree.sort((a,b) => {console.log('a', a.idx); console.log('b', b.idx); return (a.idx - b.idx)})
-    console.log('sortedSubTaskTree', sortedSubTaskTree)
-    console.log('subTaskTree after sort', subTaskTree)
-    const subTaskComponents = !!subTaskTree && subTaskTree.sort((a,b) => a.idx > b.idx).map((s, idx) => {
+    const subTaskComponents = !!subTaskTree && subTaskTree.sort((a,b) => a.idx - b.idx).map((s, idx) => {
         const {
             subTaskTree: subsubTaskTree,
             sectionNames,

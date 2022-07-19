@@ -8,8 +8,11 @@
     display: flex;
 }
 
-.delete-button {
+.attachment-row > .delete-button {
     display:none;
+}
+
+.delete-button {
     color: grey;
     height: 24px;
     width: 24px;
