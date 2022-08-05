@@ -1,0 +1,15 @@
+.confirm-delete-popup-content {
+    border-radius: 5px;
+    padding: 0.5rem;
+    -webkit-animation: .3s cubic-bezier(.38, .1, .36, .9) forwards a;
+    background: #fff;
+    border: 1px solid #d7d7d7;
+    margin: auto;
+    width: 50%;
+    top: 50%;
+    left: 25%;
+}
+
+.confirm-delete-popup-overlay {
+    background: rgba(0, 0, 0, .1);
+}

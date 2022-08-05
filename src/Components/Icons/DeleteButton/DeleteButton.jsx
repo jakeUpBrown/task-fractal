@@ -5,8 +5,8 @@ class DeleteButton extends React.Component {
     render() {
         return (
             <div
+                onClick={this.props.onClick}
                 className='delete-button'
-                onClick={this.props.onDeleteClick}
             >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" cursor="pointer">
                     <g fill="none" fillRule="evenodd">

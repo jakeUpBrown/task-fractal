@@ -34,3 +34,9 @@
     width: 100%;
     height: fit-content;
 }
+
+.section-options-container {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+}

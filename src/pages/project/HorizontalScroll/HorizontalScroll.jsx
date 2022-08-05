@@ -41,7 +41,7 @@ const HorizontalScroll = ({
   const { disableScroll, enableScroll } = usePreventBodyScroll();
 
   var sections = null;
-  const sectionTasks = Array.from(Array(numSections), () => Array(0))
+  const sectionTasks = Array.from(Array(numSections || 0), () => Array(0))
   // for each section, create a Section Component and add to the page
   if (subTaskTree) {
     Object.entries(subTaskTree).forEach(element => {

@@ -2,13 +2,13 @@
 
 import React, { useReducer } from 'react';
 import Popup from 'reactjs-popup';
-import ReactDropdown from 'react-dropdown'
 import axios from 'axios'
 import { genRanHex } from '../../../Utils/idUtils';
 import { ProjectSubtype, ProjectType } from '../../../Utils/constants'
 import './AddProjectModal.css'
 import '../Modals.css'
 import { useNavigate } from 'react-router';
+import TypeDropdown from '../../TypeDropdown/TypeDropdown';
 
 const AddProjectModal = ({
     trigger,
@@ -16,8 +16,8 @@ const AddProjectModal = ({
 
     const formInitialState = {
         title: '',
-        type: '',
-        subType: '',
+        type: ProjectType.NO_TYPE.value,
+        subType: ProjectType.NO_TYPE.value,
         description: '',
     }
 
@@ -95,32 +95,21 @@ const AddProjectModal = ({
                                         onChange={reducerInputChange}
                                     />
                                 </div>
-                                <div className="form-group mb-3">
-                                    <label className="mb-2">
-                                        <strong>type</strong>
-                                    </label>
-                                    <ReactDropdown
-                                        options={typeOptions}
-                                        onChange={(e) => reducerInputChange({ target: { name: 'type', value: e.value } })}
-                                        value={type}
-                                        placeholder="Select an option"
-                                    />
-                                </div>
-                                {
-                                    !!subTypeOptions ?
-                                        (<div className="form-group mb-3">
-                                            <label className="mb-2">
-                                                <strong>subtype</strong>
-                                            </label>
-                                            <ReactDropdown
-                                                options={subTypeOptions}
-                                                onChange={(e) => reducerInputChange({ target: { name: 'subType', value: e.value } })}
-                                                value={subType}
-                                                placeholder="Select an option"
-                                            />
-                                        </div>
-                                        ) : null
-                                }
+                                <TypeDropdown
+                                    typeOptions={typeOptions}
+                                    onChange={(e) => reducerInputChange({ target: { name: 'type', value: e.value } })}
+                                    value={type}
+                                    placeholder="Select an option"
+                                    label='type'
+                                />
+                                <TypeDropdown
+                                    typeOptions={subTypeOptions}
+                                    onChange={(e) => reducerInputChange({ target: { name: 'subType', value: e.value } })}
+                                    value={subType}
+                                    placeholder="Select an option"
+                                    label='subtype'
+                                    isVisible={!!subTypeOptions}
+                                />
                                 <div className="form-group mb-3">
                                     <label className="mb-2">
                                         <strong>Description</strong>

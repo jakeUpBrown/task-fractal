@@ -146,12 +146,12 @@ const ProjectTitle = ({
                 <div className="project-header-settings">
                     {
                         isEditable ? (<div onClick={saveClicked}>✓</div>)
-                            : showEditTitleButton ?
+                            : 
                                 (<ProjectOptions
                                     toggleIsEditable={toggleIsEditable}
                                     deleteProject={deleteProject}
                                 />)
-                                : null
+                                
                     }
                 </div>
             </div>

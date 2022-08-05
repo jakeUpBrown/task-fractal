@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Popup from 'reactjs-popup';
 import axios from 'axios'
 import './Attachments.css'
 import DeleteButton from '../../../Components/Icons/DeleteButton/DeleteButton';
@@ -31,8 +32,9 @@ const Attachment = (
         })
     }
 
-    const onDeleteClick = (e) => {
+    const onDeleteClick = (e, close) => {
         e.preventDefault()
+        close()
         console.log('delete attachment clicked')
         confirmDelete()
     }
@@ -55,9 +57,37 @@ const Attachment = (
             {
                 showDeleteButton ?
                     (
-                        <DeleteButton
-                            onDeleteClick={onDeleteClick}
-                        />
+                        <Popup trigger={
+                            <div>Delete</div>
+                        }
+                            closeOnDocumentClick
+                            className='confirm-delete-popup'
+                            closeOnEscape
+                        >
+                            {close => (
+                                <div className="modal2">
+                                    <button
+                                        className="close"
+                                        onClick={close}
+                                    >
+                                        &times;
+                                    </button>
+                                    <div className="header"> Confirm Delete </div>
+                                    <div className="content">
+                                        <div>
+                                            Are you sure you want to delete?
+                                        </div>
+                                        <button
+                                            className="btn btn-dark"
+                                            onClick={(e) => onDeleteClick(e, close)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </Popup>
+                        
                     )
                     : null
             }

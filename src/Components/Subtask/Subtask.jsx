@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import '../../pages/project/Project.css'
 import AddButton from '../Icons/AddButton'
 import Pencil from '../Icons/Pencil'
@@ -22,7 +22,6 @@ const Subtask = ({
     createTask,
 }) => {
 
-
     const {
         title,
         description,
@@ -34,6 +33,10 @@ const Subtask = ({
     const [newTitle, setNewTitle] = useState(title)
     const [newDescription, setNewDescription] = useState(description)
     const [isHover, setIsHover] = useState(false)
+
+    const {
+        projectId,
+      } = useParams();
 
     const subTaskCount = subTaskTree ? Object.keys(subTaskTree).length : 0;
 
@@ -121,7 +124,7 @@ const Subtask = ({
     const subTaskLinkClicked = (e) => {
         e.preventDefault()
         e.stopPropagation()
-        navigate(`/project/1?parentTaskId=${taskId}`)
+        navigate(`/project/${projectId}?parentTaskId=${taskId}`)
     }
 
     const subTaskLink =

@@ -77,6 +77,13 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink className="nav-link" to="/pomodoro">
+                <i 
+                className="fas fa-tachometer-alt">
+                </i>Pomodoro
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink className="nav-link" to="/projectList">
                 <i 
                 className="far fa-clone">

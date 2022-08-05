@@ -1,4 +1,5 @@
 export const AttachmentType = {
+    NO_TYPE: { value: 'NO_TYPE', label: '(no type)' },
     URL: { value: 'URL', label: 'URL' },
     DOCS: { value: 'DOCS', label: 'Google Doc' },
     SHEETS: { value: 'SHEETS', label: 'Google Sheet' },
@@ -10,6 +11,7 @@ export const AttachmentType = {
 }
 
 export const ProjectType = {
+    NO_TYPE: { value: 'NO_TYPE', label: '(no type)' },
     HOBBY: { value: 'HOBBY', label: 'Hobby' },
     CHORE: { value: 'CHORE', label: 'Chore' },
     WORK: { value: 'WORK', label: 'Work' },
@@ -19,6 +21,7 @@ export const ProjectType = {
 
 export const ProjectSubtype = {
     HOBBY: {
+        NO_TYPE: { value: 'NO_TYPE', label: '(no type)' },
         WOODWORKING: { value: 'WOODWORKING', label: 'Woodworking' },
         GUITAR: { value: 'GUITAR', label: 'Guitar' },
         LADDER_BRACKET: { value: 'LADDER_BRACKET', label: 'Ladder Bracket' },
@@ -30,6 +33,7 @@ export const ProjectSubtype = {
     }
     */
     WORK: {
+        NO_CATEGORY: { value: 'NO_CATEGORY', label: '(no type)' },
         DISPUTES: { value: 'DISPUTES', label: 'Disputes' },
         BANKING: { value: 'BANKING', label: 'Banking' },
         CA_ALERTS: { value: 'CA_ALERTS', label: 'Canadian Alerts' },

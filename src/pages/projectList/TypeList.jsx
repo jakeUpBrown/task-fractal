@@ -1,5 +1,5 @@
 import React from 'react'
-import { ProjectSubtype } from '../../Utils/constants'
+import { ProjectSubtype, ProjectType } from '../../Utils/constants'
 import ProjectRow from './ProjectRow'
 import SubTypeList from './SubTypeList'
 
@@ -7,12 +7,14 @@ const TypeList = ({
     type,
     projects,
     updateProjectCompleted,
+    subTypeFilter,
 }) => {
 
+    const typeDisplayName = ProjectType[type].label
     // check if type has any subtypes defined
     if (!(type in ProjectSubtype)) {
         return (<div className="project-list-type-container">
-            <div>{type}</div>
+            <div>{typeDisplayName}</div>
             {projects.map(project =>
                 <ProjectRow
                     {...project}
@@ -38,13 +40,19 @@ const TypeList = ({
         }
     })
 
+    console.log('subTypeFilter', subTypeFilter)
+
     const subTypeComponents = (Object.keys(subTypeLists).length > 0) ?
-        Object.entries(subTypeLists).map(([subType, projectList]) =>
-            <SubTypeList
-                subType={subType}
-                projects={projectList}
-                updateProjectCompleted={updateProjectCompleted}
-            />
+        Object.entries(subTypeLists).map(([subType, projectList]) => {
+            if (!!subTypeFilter && subType !== subTypeFilter) return null;
+            return (
+                <SubTypeList
+                    subType={subType}
+                    projects={projectList}
+                    updateProjectCompleted={updateProjectCompleted}
+                />
+            )
+        }
         )
         : null;
 
@@ -57,13 +65,9 @@ const TypeList = ({
         )
         : null;
 
-    // if it does, create SubTypeList for every subtype found
-    // list all of the projects with no subtypes
-
-
     return (
         <div className="project-list-type-container">
-            <div>{type}</div>
+            <div>{typeDisplayName}</div>
             {subTypeComponents}
             {noSubTypeComponents ? (<div>{'(no subtype)'}</div>) : null}
             {noSubTypeComponents}

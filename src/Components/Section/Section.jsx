@@ -5,6 +5,7 @@ import Subtask from '../Subtask/Subtask'
 import AddButton from '../Icons/AddButton';
 import Pencil from '../Icons/Pencil';
 import AddSubtaskModal from '../Modals/AddSubtask/AddSubtaskModal';
+import DeleteButton from '../Icons/DeleteButton/DeleteButton';
 
 const Section = ({
     project,
@@ -54,6 +55,16 @@ const Section = ({
         );
     })
 
+    const deleteClicked = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('delete section ', sectionIdx)
+        // if sectionNames.length > sectionIdx, remove and update sectionNames
+        // get list of all task ids under this section
+        // delete all of those tasks
+        // decrement all of the other tasks in the subTaskTree that have a higher sectionIdx
+    }
+
     const pencilClicked = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -95,6 +106,13 @@ const Section = ({
         setNewSectionName(value)
     }
 
+    const optionsButtons = (
+        <div className='section-options-container'>
+            <Pencil onClick={pencilClicked} />
+            <DeleteButton onClick={deleteClicked} />
+        </div>
+    )
+
     return (
         <div
             className='section-container'
@@ -128,7 +146,7 @@ const Section = ({
                         >
                             ✓
                         </div>)
-                        : (isTitleHover ? <Pencil onClick={pencilClicked} /> : null)
+                        : (isTitleHover ? optionsButtons : null)
                     }
                 </div>
                 <AddSubtaskModal

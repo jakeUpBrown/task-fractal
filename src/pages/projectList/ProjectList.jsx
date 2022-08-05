@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import axios from 'axios'
+import { ProjectSubtype, ProjectType } from '../../Utils/constants'
 import './ProjectList.css'
-import ProjectRow from './ProjectRow'
 import TypeList from './TypeList'
 import AddProjectModal from '../../Components/Modals/AddProject/AddProjectModal'
+import TypeDropdown from '../../Components/TypeDropdown/TypeDropdown'
 
 const ProjectList = () => {
   const [projects, setProjects] = useState();
@@ -26,12 +27,40 @@ const ProjectList = () => {
     readProjects();
   }, [projects]);
 
+  const formInitialState = {
+    type: '',
+    subType: '',
+  }
+
+  const [inputValues, dispatchFormValue] = useReducer(
+    (curVal, newVal) => ({ ...curVal, ...newVal }),
+    formInitialState,
+  )
+
   if (!!!projects) {
     return <div>Loading...</div>
   }
 
   if (error) {
     return <div>Error: {error}</div>
+  }
+
+  const { type, subType } = inputValues
+
+  const typeOptions = Object.values(ProjectType);
+  let subTypeOptions;
+  if (!!type) {
+    const subTypeOptionObj = ProjectSubtype[type]
+    if (!!subTypeOptionObj) {
+      subTypeOptions = Object.values(subTypeOptionObj)
+    }
+  }
+
+  const reducerInputChange = (e) => {
+    const { name, value } = e.target
+    dispatchFormValue({ [name]: value })
+
+    console.log(inputValues)
   }
 
   const updateProjectCompleted = (e, id, isCompleted) => {
@@ -56,12 +85,24 @@ const ProjectList = () => {
     })
   }
 
+  const resetFilters = (e) => {
+    e.preventDefault()
+    reducerInputChange({ target: { name: 'type', value: '' } })
+    reducerInputChange({ target: { name: 'subType', value: '' } })
+  }
+
   // sort projects into buckets by type
   // check if project has any subtypes
   const typeLists = {}
   const noTypeList = []
 
   projects.forEach(project => {
+    if (!!type) {
+      // check if project.type is selected as filter
+      if (type !== project.type) {
+        return;
+      }
+    }
     if ('type' in project && project.type) {
       if (!(project.type in typeLists)) {
         typeLists[project.type] = []
@@ -84,31 +125,40 @@ const ProjectList = () => {
         type={type}
         projects={projectList}
         updateProjectCompleted={updateProjectCompleted}
+        subTypeFilter={subType}
       />)
     }
     )
     : null;
 
-  const noTypeComponents = (noTypeList) ?
-    noTypeList.map(project =>
-      <ProjectRow
-        {...project}
-        updateProjectCompleted={updateProjectCompleted}
-      />
-    )
-    : null;
-
-  console.log('noTypeComponents', noTypeComponents)
   console.log('typeComponents', typeComponents)
 
   return (
-    <div className="project-list-container">
-      {typeComponents}
-      {noTypeComponents ? (<div>{'(no type)'}</div>) : null}
-      {noTypeComponents}
-      <AddProjectModal 
-        trigger={<span className='create-project-button'>Create Project</span>}
-      />
+    <div className='project-list-page'>
+      <div className="project-list-container">
+        {typeComponents}
+        <AddProjectModal
+          trigger={<span className='create-project-button'>Create Project</span>}
+        />
+      </div>
+      <div className='project-list-filters-group'>
+        <TypeDropdown
+          typeOptions={typeOptions}
+          onChange={(e) => reducerInputChange({ target: { name: 'type', value: e.value } })}
+          value={type}
+          placeholder="Select an option"
+          label='type'
+        />
+        <TypeDropdown
+          typeOptions={subTypeOptions}
+          onChange={(e) => reducerInputChange({ target: { name: 'subType', value: e.value } })}
+          value={subType}
+          placeholder="Select an option"
+          label='subtype'
+          isVisible={!!subTypeOptions}
+        />
+        <button onClick={resetFilters}>Reset Filters</button>
+      </div>
     </div>
   )
 }

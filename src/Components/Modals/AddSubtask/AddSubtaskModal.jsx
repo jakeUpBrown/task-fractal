@@ -50,60 +50,7 @@ const AddSubtaskModal = ({
             sectionIdx,
             idx,
         })
-        /*
-        axios.post(
-            'https://p0ts58nd3h.execute-api.us-west-1.amazonaws.com/prod/createproject',
-            { 
-                id,
-                description,
-                type,
-                subType,
-                title,
-                isFinished: false,
-            }
-          ).then(result => {
-            console.log('got result: ', result);
-            navigate(`/project/${id}`)
-          })
-          */
     }
-
-    const createForm = (
-        <div className="container mt-3">
-            <form onSubmit={onFormSubmit} noValidate>
-                <div className="form-group mb-3">
-                    <label className="mb-2">
-                        <strong>Title</strong>
-                    </label>
-                    <input
-                        required
-                        type="text"
-                        name="title"
-                        value={title}
-                        className="form-control"
-                        onChange={reducerInputChange}
-                    />
-                </div>
-                <div className="form-group mb-3">
-                    <label className="mb-2">
-                        <strong>Description</strong>
-                    </label>
-                    <textarea
-                        type="text"
-                        name="description"
-                        value={description}
-                        className="form-control"
-                        onChange={reducerInputChange}
-                    />
-                </div>
-                <div className="d-grid">
-                    <button type="submit" className="btn btn-dark">
-                        Create
-                    </button>
-                </div>
-            </form>
-        </div>
-    )
 
     return (
         <Popup

@@ -26,6 +26,7 @@ const OptionsButton = ({
             className='options-button-popup'
             keepTooltipInside="#root"
             arrow={false}
+            nested
         >
             {content}
         </Popup>
