@@ -1,7 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import { useCallback, useEffect } from "react";
 import clsx from "clsx";
-import Icon from "./Icon";
 import Progress from "./Progress";
 import classes from "./Timer.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,18 +15,9 @@ import {
   TIME_FOR_A_BREAK,
   TIME_TO_FOCUS,
 } from "../constants";
-import { updateFavicon, updateTitle, formatTime } from "../helpers";
+import { formatTime } from "../helpers";
 import useCountdown from "../useCountdown";
 import { player } from "../util";
-
-const buttonSound = player({
-  asset: "sounds/button-press.wav",
-  volume: 0.5,
-});
-
-const tickingAudio = player({
-  loop: true,
-});
 
 const alarmAudio = player({});
 
@@ -45,18 +35,21 @@ const SecondaryButton = ({ children, active, onClick }) => {
   );
 };
 
-const PrimaryButton = ({ active, onClick, color }) => (
-  <button
-    onClick={onClick}
-    className={clsx(
-      classes.primaryButton,
-      active && classes.primaryActive,
-      color
-    )}
-  >
-    {active ? STOP : START}
-  </button>
-);
+const PrimaryButton = ({ active, onClick, color, mode }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={clsx(
+        classes.primaryButton,
+        active && classes.primaryActive,
+        color
+      )}
+      id={`${mode}-${active ? 'stop' : 'start'}-button`}
+    >
+      {active ? STOP : START}
+    </button>
+  );
+}
 
 const NextButton = ({ onClick, className }) => (
   <button onClick={onClick} className={clsx(classes.nextButton, className)}>
@@ -70,65 +63,36 @@ export default function Timer() {
     mode,
     round,
     modes,
-    tickingSound,
-    tickingVolume,
     alarmSound,
     alarmVolume,
     autoPomodoros,
     autoBreaks,
-  } = useSelector((state) => state.timer);
+  } = useSelector((state) => { console.log('state', state); return state.timer});
 
-  const { ticking, start, stop, reset, timeLeft, progress } = useCountdown({
-    minutes: modes[mode].time,
+  
+  const { ticking, start, stop, reset, currentSecondsLeft, progress } = useCountdown({
+    initialSeconds: modes[mode].time,
     onStart: () => {
-      //updateFavicon(mode);
-      if (mode === POMODORO) {
-        tickingAudio.play();
-      }
     },
     onStop: () => {
-      //updateFavicon();
-      if (mode === POMODORO) {
-        tickingAudio.stop();
-      }
     },
     onComplete: () => {
       next();
-      if (mode === POMODORO) {
-        tickingAudio.stop();
-      }
       alarmAudio.play();
     },
   });
 
-  useEffect(() => {
-    updateTitle(timeLeft, mode);
-  }, [mode, timeLeft]);
-
   const jumpTo = useCallback(
     (id) => {
       reset();
-      //updateFavicon(id);
       dispatch(setMode(id));
     },
     [dispatch, reset]
   );
 
   useEffect(() => {
-    tickingAudio.stop();
-    tickingAudio.setAudio(tickingSound);
-    if (ticking && mode === POMODORO) {
-      tickingAudio.play();
-    }
-  }, [mode, ticking, tickingSound]);
-
-  useEffect(() => {
     alarmAudio.setAudio(alarmSound);
   }, [alarmSound]);
-
-  useEffect(() => {
-    tickingAudio.setVolume(tickingVolume);
-  }, [tickingVolume]);
 
   useEffect(() => {
     alarmAudio.setVolume(alarmVolume);
@@ -155,18 +119,16 @@ export default function Timer() {
 
   const confirmAction = useCallback(
     (cb) => {
-      let allowed = true;
-      if (ticking) {
-        stop();
-        allowed = confirm(CONFIRM);
-        start();
-      }
-
-      if (allowed) {
-        cb();
+      if (!ticking) {
+        cb()
+      } else {
+        if (confirm(CONFIRM)) {
+          stop()
+          cb()
+        }
       }
     },
-    [start, stop, ticking]
+    [stop, ticking]
   );
 
   const confirmNext = useCallback(() => {
@@ -181,7 +143,6 @@ export default function Timer() {
   );
 
   const toggleTimer = useCallback(() => {
-    buttonSound.play();
     if (ticking) {
       stop();
     } else {
@@ -194,7 +155,7 @@ export default function Timer() {
       <Progress percent={progress} />
       <div className={classes.container}>
         <div className={classes.content}>
-          <ul>
+          <ul id='mode-button-array'>
             {Object.values(modes).map(({ id, label }) => (
               <SecondaryButton
                 key={id}
@@ -206,13 +167,14 @@ export default function Timer() {
               </SecondaryButton>
             ))}
           </ul>
-          <div className={classes.time}>{formatTime(timeLeft)}</div>
+          <div className={classes.time}>{formatTime(currentSecondsLeft)}</div>
           <div className={classes.actionButtons}>
             <div className={classes.left} />
             <PrimaryButton
               active={ticking}
               onClick={toggleTimer}
               color={classes[mode]}
+              mode={mode}
             />
             <div className={classes.right}>
               <NextButton

@@ -21,6 +21,7 @@ const Project = () => {
   const [project, setProject] = useState();
   const [subTasks, setSubTasks] = useState();
   const [error, setError] = useState();
+  const [showCompleted, setShowCompleted] = useState();
 
   useEffect(() => {
     console.log('useEffect project', project);

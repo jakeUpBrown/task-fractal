@@ -90,13 +90,6 @@ const Navbar = () => {
                 </i>All Projects
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/project/1">
-                <i 
-                className="far fa-chart-bar">
-                </i>Project
-              </NavLink>
-            </li>
         </ul>
       </div>
   </nav>

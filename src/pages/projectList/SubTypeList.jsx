@@ -6,6 +6,7 @@ const SubTypeList = ({
     subType,
     projects,
     updateProjectCompleted,
+    showCompleted,
 }) => {
 
     // check if project has any subtypes
@@ -19,7 +20,8 @@ const SubTypeList = ({
             {projects.map((project) =>
                 <ProjectRow
                     {...project}
-                    updateProjectCompleted = { updateProjectCompleted }
+                    updateProjectCompleted={updateProjectCompleted}
+                    showCompleted={showCompleted}
                 />)}
         </div>
     )

@@ -25,7 +25,8 @@ export const ProjectSubtype = {
         WOODWORKING: { value: 'WOODWORKING', label: 'Woodworking' },
         GUITAR: { value: 'GUITAR', label: 'Guitar' },
         LADDER_BRACKET: { value: 'LADDER_BRACKET', label: 'Ladder Bracket' },
-        TASK_FRACTAL: { value: 'TASK_FRACTAL', label: 'Task Fractal' }
+        TASK_FRACTAL: { value: 'TASK_FRACTAL', label: 'Task Fractal' },
+        PROGRAMMING: { value: 'PROGRAMMING', label: 'Programming' }
     },
     /*
     CHORE: {
@@ -33,11 +34,14 @@ export const ProjectSubtype = {
     }
     */
     WORK: {
-        NO_CATEGORY: { value: 'NO_CATEGORY', label: '(no type)' },
+        NO_TYPE: { value: 'NO_TYPE', label: '(no subtype)' },
         DISPUTES: { value: 'DISPUTES', label: 'Disputes' },
         BANKING: { value: 'BANKING', label: 'Banking' },
         CA_ALERTS: { value: 'CA_ALERTS', label: 'Canadian Alerts' },
-        LEARNING: { value: 'LEARNING', label: 'Learning' }
+        GE_WEB: { value: 'GE_WEB', label: 'Team GE Web' },
+        LEARNING: { value: 'LEARNING', label: 'Learning' },
+        SAPPHIRE: { value: 'SAPPHIRE', label: 'Team Sapphire' },
+        FAUCET: { value: 'FAUCET', label: 'Faucet' }
     },
     /*
     SOCIAL: {

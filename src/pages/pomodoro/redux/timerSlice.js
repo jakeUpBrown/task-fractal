@@ -7,8 +7,8 @@ import {
   DIGITAL_SOUND,
 } from "../constants";
 
-const initialState = {
-  mode: POMODORO,
+export const initialState = {
+  mode: localStorage.getItem('mode'),
   round: 1,
   autoBreaks: false,
   autoPomodoros: false,
@@ -22,17 +22,17 @@ const initialState = {
     [POMODORO]: {
       id: POMODORO,
       label: "Pomodoro",
-      time: 25,
+      time: 25 * 60,
     },
     [SHORT_BREAK]: {
       id: SHORT_BREAK,
       label: "Short Break",
-      time: 5,
+      time: 5 * 60,
     },
     [LONG_BREAK]: {
       id: LONG_BREAK,
       label: "Long Break",
-      time: 15,
+      time: 15 * 60,
     },
   },
 };

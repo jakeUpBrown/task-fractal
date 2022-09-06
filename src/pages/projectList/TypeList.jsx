@@ -8,15 +8,17 @@ const TypeList = ({
     projects,
     updateProjectCompleted,
     subTypeFilter,
+    showCompleted,
 }) => {
 
     const typeDisplayName = ProjectType[type].label
     // check if type has any subtypes defined
     if (!(type in ProjectSubtype)) {
         return (<div className="project-list-type-container">
-            <div>{typeDisplayName}</div>
+            <div className='project-type-header'>{typeDisplayName}</div>
             {projects.map(project =>
                 <ProjectRow
+                    showCompleted={showCompleted}
                     {...project}
                     updateProjectCompleted={updateProjectCompleted}
                 />
@@ -45,9 +47,11 @@ const TypeList = ({
     const subTypeComponents = (Object.keys(subTypeLists).length > 0) ?
         Object.entries(subTypeLists).map(([subType, projectList]) => {
             if (!!subTypeFilter && subType !== subTypeFilter) return null;
+            const subTypeDisplayName = ProjectSubtype[type][subType].label
             return (
                 <SubTypeList
-                    subType={subType}
+                    showCompleted={showCompleted}
+                    subType={subTypeDisplayName}
                     projects={projectList}
                     updateProjectCompleted={updateProjectCompleted}
                 />
@@ -61,13 +65,14 @@ const TypeList = ({
             <ProjectRow
                 {...project}
                 updateProjectCompleted={updateProjectCompleted}
+                showCompleted={showCompleted}
             />
         )
         : null;
 
     return (
         <div className="project-list-type-container">
-            <div>{typeDisplayName}</div>
+            <div className='project-type-header'>{typeDisplayName}</div>
             {subTypeComponents}
             {noSubTypeComponents ? (<div>{'(no subtype)'}</div>) : null}
             {noSubTypeComponents}

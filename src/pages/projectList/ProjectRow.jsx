@@ -7,6 +7,7 @@ const ProjectRow = ({
     isCompleted,
     title,
     updateProjectCompleted,
+    showCompleted,
 }) => {
     return (
         <div className='project-row-container'>
@@ -17,7 +18,7 @@ const ProjectRow = ({
                 {isCompleted ? 'X' : 'O'}
             </div>
             <Link
-                className='project-link project-row-item'
+                className={`project-link project-row-item ${isCompleted && showCompleted }`}
                 to={`/project/${id}`}
             >
                 {title}

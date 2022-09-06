@@ -9,6 +9,7 @@ import TypeDropdown from '../../Components/TypeDropdown/TypeDropdown'
 const ProjectList = () => {
   const [projects, setProjects] = useState();
   const [error, setError] = useState()
+  const [showCompleted, setShowCompleted] = useState(false)
 
   useEffect(() => {
     if (!!projects) {
@@ -63,6 +64,11 @@ const ProjectList = () => {
     console.log(inputValues)
   }
 
+  const showCompletedClicked = (e) => {
+    e.preventDefault()
+    setShowCompleted(!showCompleted)
+  }
+
   const updateProjectCompleted = (e, id, isCompleted) => {
     e.preventDefault()
     console.log('project completed clicked', id, isCompleted)
@@ -104,6 +110,11 @@ const ProjectList = () => {
       }
     }
     if ('type' in project && project.type) {
+      if (project.isCompleted && !showCompleted) {
+        // skip adding project to list is completed and 
+        return;
+      }
+
       if (!(project.type in typeLists)) {
         typeLists[project.type] = []
       }
@@ -126,6 +137,7 @@ const ProjectList = () => {
         projects={projectList}
         updateProjectCompleted={updateProjectCompleted}
         subTypeFilter={subType}
+        showCompleted={showCompleted}
       />)
     }
     )
@@ -135,6 +147,25 @@ const ProjectList = () => {
 
   return (
     <div className='project-list-page'>
+      <div className='project-list-header'>
+        <div
+          className='completed-button-container'
+          onClick={showCompletedClicked}
+        >
+          {
+            (showCompleted) ?
+              (
+
+                <div className='task-check-circle'>
+                  ✓
+                </div>
+              )
+              : <div className='task-check-circle'>
+
+              </div>
+          }
+        </div>
+      </div>
       <div className="project-list-container">
         {typeComponents}
         <AddProjectModal

@@ -24,7 +24,7 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <Navbar />
-        <main>
+        <main id='app-container'>
           <Routes>
             <Route
               path="/"
